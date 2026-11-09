@@ -1,0 +1,11 @@
+services:
+  tracker:
+    build: .
+    env_file: .env
+    ports:
+      - "127.0.0.1:8000:8000"   # put nginx/Caddy with HTTPS in front
+    volumes:
+      - tracker-data:/srv/data
+    restart: unless-stopped
+volumes:
+  tracker-data:

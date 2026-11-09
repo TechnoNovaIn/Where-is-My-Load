@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0F1A30">
+  <script src="/static/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+  <link rel="icon" href="/static/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/static/favicon-48.png" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+  <link rel="manifest" href="/static/manifest.webmanifest">
+  <meta name="application-name" content="Where is my load">
+  <meta name="apple-mobile-web-app-title" content="Where is my load">
+  <title>Where is my load | Balaji Transports</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.css"
+        integrity="sha384-MinO0mNliZ3vwppuPOUnGa+iq619pfMhLVUXfC4LHwSCvF9H+6P/KO4Q7qBOYV5V" crossorigin="anonymous">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <a class="skip" href="#rail">Skip to shipments</a>
+  <header class="top">
+    <a class="brand" href="/" aria-label="Where is my load, home">
+      <img class="brand-logo" src="/static/mark-96.png" alt="" width="34" height="34">
+      <span class="brand-text"><span class="brand-name">Where is my load</span><span class="brand-sub" id="brandSub">by Balaji Transports</span></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="/" id="navTrack">Tracking</a>
+      <a href="/admin" id="navAdmin" hidden>Users</a>
+    </nav>
+    <div class="top-actions">
+      <a class="crm-chip" id="crmChip" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11 11 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11 11 0 0 0 .6 3.6 1 1 0 0 1-.25 1z" fill="currentColor"/></svg>
+        <span class="crm-text"><span class="crm-label" id="crmLabel"></span><span class="crm-number" id="crmNumber"></span></span>
+      </a>
+      <button class="icon-btn" id="bellBtn" aria-label="Notifications" aria-haspopup="dialog" aria-expanded="false" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6zm-2 15a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span class="badge" id="bellBadge" hidden>0</span>
+      </button>
+      <button class="user-chip" id="userBtn" aria-haspopup="menu" aria-expanded="false">
+        <span class="avatar" id="avatar">·</span><span class="user-chip-name" id="userName"></span>
+      </button>
+    </div>
+  </header>
+  <div class="menu" id="userMenu" role="menu" hidden>
+    <div class="menu-head"><b id="menuName"></b><span id="menuCompany"></span></div>
+    <button role="menuitem" id="pwBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>Change password</button>
+    <button role="menuitem" id="themeBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z" fill="currentColor"/></svg><span id="themeLabel">Light theme</span></button>
+    <button role="menuitem" id="logoutBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h11" fill="none" stroke="currentColor" stroke-width="2"/></svg>Sign out</button>
+  </div>
+
+  <section class="panel" id="notifPanel" role="dialog" aria-label="Notifications" hidden>
+    <div class="panel-head">
+      <h2>Notifications</h2>
+      <div>
+        <button class="btn ghost" id="markAllBtn">Mark all read</button>
+        <button class="icon-btn small" id="notifClose" aria-label="Close notifications">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+      </div>
+    </div>
+    <button class="enable-alerts" id="enableAlerts" hidden>Show desktop alerts when this tab is in the background</button>
+    <ul class="notif-list" id="notifList"></ul>
+  </section>
+
+  <main class="layout">
+    <aside class="rail" id="rail" aria-label="Shipments">
+      <div class="rail-list" id="listView">
+        <div class="kpis" aria-label="Summary">
+          <button class="kpi" type="button" data-filter="loading"><b id="kLoading">–</b><span>At plant</span></button>
+          <button class="kpi k-transit" type="button" data-filter="transit"><b id="kTransit">–</b><span>In transit</span></button>
+          <button class="kpi k-site" type="button" data-filter="site"><b id="kSite">–</b><span>At site</span></button>
+          <button class="kpi k-done" type="button" data-filter="done_today"><b id="kDone">–</b><span>Delivered today</span></button>
+        </div>
+        <div class="rail-controls">
+          <div class="tabs" role="tablist" aria-label="Shipment filter">
+            <button role="tab" class="tab" data-scope="active" aria-selected="true">On the way <span class="count" id="countActive"></span></button>
+            <button role="tab" class="tab" data-scope="delivered" aria-selected="false">Delivered <span class="count" id="countDelivered"></span></button>
+            <button class="icon-btn small export-btn" id="exportBtn" title="Download CSV" aria-label="Export shipments as CSV">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 17v2h14v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="filters" id="filters">
+            <label class="search">
+              <span class="sr-only">Search shipments</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="2"/></svg>
+              <input id="search" type="search" placeholder="Truck, product or site" autocomplete="off">
+            </label>
+            <label id="partyWrap" hidden><span class="sr-only">Party</span><select class="select" id="partySelect"><option value="">All my parties</option></select></label>
+            <div id="dateWrap" class="date-filter" hidden><label><span class="sr-only">Delivered since</span><input id="dateFilter" type="date" class="select" title="Show deliveries from this date"></label><button id="dateClear" class="date-clear" type="button" aria-label="Clear date filter" hidden>&times;</button></div>
+          </div>
+        </div>
+        <ul class="ship-list" id="shipList" aria-live="polite"></ul>
+        <p class="sync-note" id="syncNote"></p>
+      </div>
+      <div class="rail-detail" id="detailView" hidden></div>
+    </aside>
+
+    <div class="map-wrap">
+      <div id="map" role="region" aria-label="Map of trucks"></div>
+      <div class="map-off" id="mapOff" hidden><b>Map unavailable</b><span id="mapOffMsg"></span></div>
+      <details class="map-legend" id="legend">
+        <summary>Legend</summary>
+        <div class="lg-group">
+          <span class="lg-head">Colour = status</span>
+          <span class="lg-row lg-plant"><i></i>At plant (assigned / loading)</span>
+          <span class="lg-row lg-transit"><i></i>Dispatched / in transit</span>
+          <span class="lg-row lg-site"><i></i>Near destination / at unloading point</span>
+        </div>
+        <div class="lg-group">
+          <span class="lg-head">Symbol = GPS</span>
+          <span class="lg-row"><span class="truck-pin mini"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l7 18-7-4-7 4z" fill="currentColor"/></svg></span>Moving, arrow shows direction</span>
+          <span class="lg-row"><span class="truck-pin mini"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="13" height="9" rx="1" fill="currentColor"/><path d="M15 10h4l3 3v3h-7z" fill="currentColor"/></svg></span>Stopped or no direction reported</span>
+          <span class="lg-row"><span class="truck-pin mini stale"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="13" height="9" rx="1" fill="currentColor"/><path d="M15 10h4l3 3v3h-7z" fill="currentColor"/></svg></span>Faded, dashed: no GPS update for 30+ min</span>
+        </div>
+      </details>
+      <button class="map-fit" id="fitBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2"/></svg>Fit all trucks</button>
+    </div>
+  </main>
+
+  <div id="offlineBanner" class="offline-banner" hidden role="alert">You're offline — data may be stale</div>
+  <div class="toast-zone" id="toasts" aria-live="assertive"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.js"
+          integrity="sha384-SYKAG6cglRMN0RVvhNeBY0r3FYKNOJtznwA0v7B5Vp9tr31xAHsZC0DqkQ/pZDmj" crossorigin="anonymous"></script>
+  <script type="module" src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0F1A30">
+  <script src="/static/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+  <link rel="icon" href="/static/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/static/favicon-48.png" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+  <link rel="manifest" href="/static/manifest.webmanifest">
+  <meta name="application-name" content="Where is my load">
+  <meta name="apple-mobile-web-app-title" content="Where is my load">
+  <title>Sign in | Where is my load</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="login-page">
+  <aside class="login-aside">
+    <div class="login-brand">
+      <img class="brand-logo" src="/static/mark-96.png" alt="" width="34" height="34">
+      <span><span class="brand-name">Where is my load</span><span class="brand-sub">by Balaji Transports</span></span>
+    </div>
+    <div class="login-pitch">
+      <img class="login-seal" src="/static/logo-512.png" alt="Balaji Transports" width="168" height="168">
+      <h1>Where is my load?<br>Right here, live.</h1>
+      <p>Follow your steel from JSW Toranagallu to your unloading point: live truck location, an alert at every step, and one number to call for follow-up.</p>
+      <div class="login-steps">
+        <span class="pill s-loading">Loading</span><span class="pill s-in_transit">In transit</span><span class="pill s-arrived">At your site</span><span class="pill s-delivered">Delivered</span>
+      </div>
+    </div>
+    <div class="login-foot">A Balaji Transports service, Tumakuru</div>
+  </aside>
+  <main class="login-main">
+    <form class="login-card" id="loginForm" novalidate>
+      <h2>Sign in</h2>
+      <p class="lede">Track your loads with the login Balaji Transports gave you.</p>
+      <label class="field"><span>Username</span><input class="input" id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+      <label class="field"><span>Password</span><input class="input" id="password" name="password" type="password" autocomplete="current-password" required></label>
+      <p class="form-error" id="formError" role="alert" hidden></p>
+      <button class="btn primary" type="submit" id="submitBtn">Sign in</button>
+      <p class="help" id="loginHelp">Forgot your password or need a login? Contact your Balaji Transports representative.</p>
+    </form>
+  </main>
+  <script type="module" src="/static/login.js"></script>
+</body>
+</html>

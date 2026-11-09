@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0F1A30">
+  <script src="/static/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+  <link rel="icon" href="/static/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/static/favicon-48.png" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+  <link rel="manifest" href="/static/manifest.webmanifest">
+  <meta name="application-name" content="Where is my load">
+  <meta name="apple-mobile-web-app-title" content="Where is my load">
+  <title>Users | Where is my load</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/" aria-label="Where is my load, home">
+      <img class="brand-logo" src="/static/mark-96.png" alt="" width="34" height="34">
+      <span class="brand-text"><span class="brand-name">Where is my load</span><span class="brand-sub" id="brandSub">by Balaji Transports</span></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="/" id="navTrack">Tracking</a>
+      <a href="/admin" id="navAdmin" hidden>Users</a>
+    </nav>
+    <div class="top-actions">
+      <a class="crm-chip" id="crmChip" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11 11 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11 11 0 0 0 .6 3.6 1 1 0 0 1-.25 1z" fill="currentColor"/></svg>
+        <span class="crm-text"><span class="crm-label" id="crmLabel"></span><span class="crm-number" id="crmNumber"></span></span>
+      </a>
+      <button class="icon-btn" id="bellBtn" aria-label="Notifications" aria-haspopup="dialog" aria-expanded="false" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6zm-2 15a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span class="badge" id="bellBadge" hidden>0</span>
+      </button>
+      <button class="user-chip" id="userBtn" aria-haspopup="menu" aria-expanded="false">
+        <span class="avatar" id="avatar">·</span><span class="user-chip-name" id="userName"></span>
+      </button>
+    </div>
+  </header>
+  <div class="menu" id="userMenu" role="menu" hidden>
+    <div class="menu-head"><b id="menuName"></b><span id="menuCompany"></span></div>
+    <button role="menuitem" id="pwBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>Change password</button>
+    <button role="menuitem" id="themeBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z" fill="currentColor"/></svg><span id="themeLabel">Light theme</span></button>
+    <button role="menuitem" id="logoutBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h11" fill="none" stroke="currentColor" stroke-width="2"/></svg>Sign out</button>
+  </div>
+
+  <main class="admin-main">
+    <div class="page-head">
+      <div>
+        <h1>User master</h1>
+        <p>Create party logins and choose which party names each login can track.</p>
+      </div>
+      <button class="btn primary" id="newUserBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2"/></svg>New user</button>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b id="sUsers">–</b><span>Active party logins</span></div>
+      <div class="stat"><b id="sNames">–</b><span>Party names in shipments</span></div>
+      <div class="stat warn"><b id="sUnassigned">–</b><span>Party names with no login</span></div>
+      <div class="stat"><b id="sAdmins">–</b><span>Administrators</span></div>
+    </div>
+    <div class="subnav" role="tablist">
+      <button role="tab" data-view="users" aria-selected="true">Users</button>
+      <button role="tab" data-view="parties" aria-selected="false">Party names</button>
+      <button role="tab" data-view="audit" aria-selected="false">Activity</button>
+      <button role="tab" data-view="settings" aria-selected="false">Customer care</button>
+    </div>
+    <section id="view-users">
+      <div class="toolbar">
+        <label class="search"><span class="sr-only">Search users</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="2"/></svg>
+          <input id="userSearch" type="search" placeholder="Username, company or party name" autocomplete="off"></label>
+        <select class="select" id="userFilter" aria-label="Filter users">
+          <option value="all">All users</option><option value="active">Active</option><option value="disabled">Disabled</option><option value="admin">Administrators</option>
+        </select>
+      </div>
+      <div class="table-wrap"><table class="data">
+        <thead><tr><th>User</th><th>Party names</th><th>Role</th><th>Status</th><th>Last sign-in</th></tr></thead>
+        <tbody id="userRows"></tbody>
+      </table></div>
+    </section>
+    <section id="view-parties" hidden>
+      <div class="toolbar">
+        <label class="search"><span class="sr-only">Search party names</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="2"/></svg>
+          <input id="partySearch" type="search" placeholder="Party name" autocomplete="off"></label>
+        <label class="switch"><input type="checkbox" id="onlyUnassigned"> Only names without a login</label>
+      </div>
+      <div class="table-wrap"><table class="data">
+        <thead><tr><th>Party name (as in shipments)</th><th class="num">On the way</th><th class="num">Shipments</th><th>Last shipment</th><th>Logins</th><th></th></tr></thead>
+        <tbody id="partyRows"></tbody>
+      </table></div>
+    </section>
+    <section id="view-audit" hidden>
+      <div class="table-wrap"><table class="data">
+        <thead><tr><th>When</th><th>By</th><th>Action</th><th>User</th><th>Details</th></tr></thead>
+        <tbody id="auditRows"></tbody>
+      </table></div>
+    </section>
+    <section id="view-settings" hidden>
+      <div class="settings-header">
+        <div>
+          <span class="lg-head">Support team contacts</span>
+          <p class="u-sub">Party users see these contacts in the header, on each shipment and on the sign-in page.</p>
+          <span class="u-sub" id="crmMeta"></span>
+        </div>
+        <button class="btn primary" id="crmAddBtn" type="button">+ Add contact</button>
+      </div>
+      <div id="crmList" class="crm-list"></div>
+      <div id="crmEmpty" class="empty" hidden>
+        <p>No support contacts yet. Add one so party users can reach your team.</p>
+      </div>
+    </section>
+  </main>
+  <div class="toast-zone" id="toasts" aria-live="assertive"></div>
+  <script type="module" src="/static/admin.js"></script>
+</body>
+</html>
